@@ -7,7 +7,10 @@ The learner wants to independently build an AI agent and intuitively understand 
 an AI agent without a coding assistant. This repository is a guided learning course.
 
 **Do not interpret the eventual bot specification as permission to implement every
-feature now. Only prepare the next small lesson after reviewing the current one.**
+feature now.** At the learner's explicit request (2026-10-10) all twelve lesson scripts
+and guides were written ahead of time. That is course material, not completed learning.
+The learner still works through one lesson at a time, behind each review gate, and
+does every experiment personally.
 
 ## Mandatory teaching requirements
 
@@ -75,5 +78,6 @@ and the learner's notes are allowed.
 ## Current requirement priority
 
 **Now:** help the learner trace lesson 1, make their own changes, and explain a second
-node's input. **Not now:** build the webhook, install a model adapter, add memory, or
-complete remaining lessons. See PROGRESS.md for actual completion status.
+node's input. **Not now:** jump ahead to later lessons, solve their experiments, or build
+anything beyond the course. Lesson material for F1–F10 exists in `lessons/`, but none of
+it counts as learner evidence. See PROGRESS.md for actual completion status.

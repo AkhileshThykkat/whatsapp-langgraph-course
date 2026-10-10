@@ -28,8 +28,23 @@ Read **[the lesson guide](lessons/01_node_and_edge.md)** alongside the script.
 START → make_reply → END
 ```
 
-This uses actual LangGraph but is **not yet an AI agent**. Its reply is ordinary Python
-text formatting. No LLM, tools, server, saved memory, or WhatsApp sending exists yet.
+Lesson 1 uses actual LangGraph but is **not yet an AI agent**. Its reply is ordinary
+Python text formatting. Tools, loops, a model, memory, and a local webhook arrive one
+lesson at a time (see [COURSE.md](COURSE.md)). Nothing in the course sends WhatsApp messages.
+
+## Later lessons
+
+Every lesson runs the same way: `uv run --locked python lessons/NN_name.py`, with its
+guide `lessons/NN_name.md` next to it. Two lessons need something extra:
+
+```bash
+# Lessons 7-8: optional real Claude call (default is an offline fake model, no key needed)
+export ANTHROPIC_API_KEY=...   # your own key; never commit it
+uv run --locked --group llm python lessons/07_one_model_call.py --real
+
+# Lesson 12: run the tests
+uv run --locked pytest lessons -q
+```
 
 ## Learn with Claude or another coding agent
 
@@ -65,9 +80,10 @@ they solve a problem the learner has already encountered.
 
 ## Files
 
-- `lessons/01_node_and_edge.py` — the first runnable example.
-- `lessons/01_node_and_edge.md` — explanation, predictions, and experiments.
-- `COURSE.md` — proposed progression; later lessons are not generated upfront.
+- `lessons/NN_*.py` — one small runnable example per lesson (01–11).
+- `lessons/NN_*.md` — each lesson's explanation, predictions, experiments, and review checkpoint.
+- `lessons/support_bot.py` / `lessons/test_support_bot.py` — lesson 12's bot and its tests.
+- `COURSE.md` — the progression and which files belong to each lesson.
 - `REQUIREMENTS.md` — primary teaching requirements and eventual bot acceptance criteria.
 - `PROGRESS.md` — implementation status, review checkpoint, and pending work.
 - `TASKS.md` — prediction, modification, debugging, and rebuilding exercises to demonstrate understanding.
@@ -87,6 +103,6 @@ only the brief/rubric. Build from a blank folder **without AI help for design, c
 debugging, tests, or review**. Official docs and your notes are allowed. Runtime use
 of an LLM inside your product is allowed; AI development assistance is not.
 
-Only lesson 1 is implemented, and the learner has not yet completed its review.
-There is no production bot or real webhook in this repository. Use invented data;
-never commit credentials or production customer information.
+All twelve lessons are written, but the learner has not yet completed lesson 1's
+review. Do them in order. There is no production bot or real webhook in this repository.
+Use invented data; never commit credentials or production customer information.
