@@ -83,8 +83,8 @@ a reducer independently to each updated key. Without a custom reducer, that key'
 new value replaces its old value. An omitted key retains its previous value.
 
 A `TypedDict` communicates key/type expectations to tooling; it is not itself a
-runtime validation mechanism. Pydantic validation at input and model-output boundaries
-is a separate concern we will cover later.
+runtime validation mechanism. Validation at input and model-output boundaries is a
+separate concern; lessons 7, 8 and 10 do it by hand with explicit checks.
 
 ### Why distinguish state from prompt?
 
@@ -154,7 +154,7 @@ updates across sequential steps too—not only parallel execution.
 
 A subtle error: returning the whole accumulated trace from a node when the reducer
 already appends. Old entries get appended again. Nodes should return deltas for
-append-based fields. Lesson 1 simulates these mechanics in plain Python.
+append-based fields. Lesson 6 lets you reproduce this with a real reducer.
 
 ### Why not append every field?
 
@@ -255,13 +255,13 @@ retries/checkpoint replay do not automatically make those effects exactly-once.
 
 ## Where these concepts enter the course
 
-- Now: state, partial updates, and overwrite vs append.
-- Next: tools, scope, and deterministic control flow.
-- Then: graph nodes/edges/reducers/streaming.
-- After that: model input/output, safe dispatch, memory, webhook, interrupts, evaluation.
+- Lessons 1–3: state, partial updates, nodes, fixed and conditional edges.
+- Lessons 4–6: tools and ownership scope, deterministic decide/act loops, reducers and streams.
+- Lessons 7–8: model input/output, parsing, and safe tool dispatch.
+- Lessons 9–12: memory, the dummy webhook, interrupts and replay, tests and reliability.
 
-You do not have to understand checkpoint replay yet. Start by predicting the result
-of the three small state functions in lesson 1.
+You do not have to understand checkpoint replay yet. Start by predicting the state
+that lesson 1's single node receives and returns.
 
 ## References
 

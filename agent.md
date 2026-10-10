@@ -2,7 +2,8 @@
 
 Read REQUIREMENTS.md first: teaching requirements are the primary specification.
 Then read PROGRESS.md for built/verified work, learner checkpoints, and remaining work.
-Use TASKS.md to guide understanding; only its lesson 1 tasks are active.
+Use TASKS.md to guide understanding; its tasks unlock one lesson at a time
+(currently only lesson 1 is active).
 Do not complete the learner's tasks for them or treat remaining features as permission
 to complete the app now.
 
@@ -21,7 +22,11 @@ must remain local/dummy initially. No live WhatsApp sending, production data, or
   where every calculation is visible rather than hidden behind framework abstractions.
 - Use real LangGraph for graph lessons. Do not require implementing a homemade graph
   engine, generic merge framework, or a large TODO/test scaffold first.
-- Add ONE principal concept per lesson. Do not generate all later lessons in advance.
+- Each lesson adds ONE principal concept. At the learner's explicit request ("the course
+  is not completed", 2026-10-10) all twelve lesson scripts and guides now exist. That
+  is course material, not learner progress: still teach them in order, behind each
+  review gate, and never write the solutions to their experiments. Add or reorder
+  lessons only after explaining and agreeing.
 - Each important code/design decision needs two parts, in this order:
   `# Simple why: ...` — plain English, minimal jargon.
   `# Technical explanation: ...` — accurate mechanics and trade-offs.
@@ -40,12 +45,15 @@ must remain local/dummy initially. No live WhatsApp sending, production data, or
 
 ## Current checkpoint
 - Read README.md, COURSE.md, lessons/01_node_and_edge.py, and its companion guide.
-- Lesson 1 was smoke-run successfully with Python 3.12.13 and LangGraph 1.2.14.
-  This is runtime verification, NOT evidence that the learner understands it.
-- Only lesson 1 exists: START → make_reply → END, using ordinary string formatting.
-- It is NOT yet an AI agent. There is no LLM, tool, loop, checkpointer, or webhook.
+- Lessons 1–12 exist in lessons/ (see COURSE.md for the file of each). All of them were
+  smoke-run with LangGraph 1.2.14 and the lesson 12 tests pass. That is runtime
+  verification, NOT evidence that the learner understands any of it.
+- The learner is still at lesson 1: START → make_reply → END, ordinary string formatting.
+  It is NOT an AI agent. Models enter in lesson 7; lessons 7–8 default to a fake model.
 - Lesson 1 has not been completed/reviewed by the learner. First ask what the node
   receives and why final state contains both message and reply.
+- Lesson N+1 contains a fuller version of lesson N's main experiment. Before opening
+  the next lesson, have the learner finish and explain the current experiment.
 - Their next experiment is to add a second node and predict the state it receives.
   Guide that experiment; do not silently add it for them or jump to the next lesson.
 - docs/CONCEPTS.md is optional background, not a prerequisite to memorize.
@@ -75,7 +83,10 @@ interrupt/resume → tests and reliability. Reorder only after explaining and ag
 ## Tooling and safety
 - Use uv only for environment/dependency management and running scripts. Keep uv.lock
   committed. Prefer `uv run --locked ...`; add dependencies only when needed.
-- Python 3.12 is the baseline. No API key is needed for lesson 1. Never commit secrets.
+- Python 3.12 is the baseline. No API key is needed for any lesson by default. Lessons
+  7–8 call Claude only with `--real`, the optional `llm` dependency group
+  (`uv run --locked --group llm ...`), and the learner's own credentials. Never commit
+  secrets. Lesson 12 tests: `uv run --locked pytest lessons -q`.
 - Check current official LangGraph docs when introducing new APIs; test their behavior
   against the locked version rather than guessing. Do not add hosted observability
   or external rendering services without asking.

@@ -1,7 +1,7 @@
 # Understanding tasks — YOU do these, the teaching agent guides
 
 **The requirement is understanding, not having the assistant complete this checklist.**
-Only lesson 1 tasks are active. Do them in order, one small experiment at a time.
+Only lesson 1 tasks are active; later lessons unlock one at a time. Do them in order, one small experiment at a time.
 Predict before running. Ask for a hint if stuck; no full solution is required upfront.
 
 ## How to demonstrate understanding
@@ -121,23 +121,30 @@ Do not advance until you can answer:
 The teaching agent should check one tricky concrete case, not ask for definitions only.
 Record learner-reviewed completion in PROGRESS.md; runtime verification is not enough.
 
-## Future tasks — NOT active and no solution code should be generated yet
+## Locked: lessons 2–12
 
-| Concept | Eventual understanding task |
-|---|---|
-| Branch | Predict which route runs for two messages; prove why the other route does not |
-| Tool | Show the difference between requesting a lookup and actually executing it |
-| Ownership | Try an invented order owned by a different demo customer and explain denial |
-| Loop | Trace two decision steps with a tool observation between them; trigger a cap |
-| Reducer | Predict append vs replacement; reproduce a doubled-history bug |
-| Model | Identify precisely what the model receives and what application code still controls |
-| Tool dispatch | Validate an unknown model-requested action without executing arbitrary code |
-| Memory | Show thread isolation, then explain stale per-turn data and process restart behavior |
-| Webhook | Invoke the same bot through CLI and local HTTP without changing graph logic |
-| Interrupt | Compare reaching END with pausing; explain which code re-executes on resume |
-| Testing | Write arrange/act/assert for one behavior you have already observed manually |
+These unlock **one at a time**, only after the previous lesson's gate is reviewed. Each
+lesson guide (`lessons/NN_name.md`) has the full predictions and experiments; the tasks
+below are the evidence to bring. Use the same note template as above. The scripts exist
+already, but do not open the next lesson early: each one shows a version of the previous
+lesson's main experiment.
 
-Prepare these tasks in detail only when their lessons are reached and reviewed.
+| Lesson | Tasks (predict → modify → observe → explain) | Gate question the agent will ask |
+|---|---|---|
+| 2 Path | Predict all node inputs; reorder the nodes and explain the failure; add a `word_count` node | What breaks if `clean_message → guess_intent` is removed, and when? |
+| 3 Branch | Prove unchosen routes do not run; add a `shipping` branch; leave it out of `path_map` | Which return values are merged, which pick a road, which come back to you? |
+| 4 Tool | Try to read Ben's order as Ana in several ways; add a fact; make a tool raise | Which exact line prevents the leak, and why can't message text change it? |
+| 5 Loop | Move `MAX_DECISIONS`; break the stop rule; meet `GraphRecursionError` | Why are an app hop limit and `recursion_limit` different? |
+| 6 Reducer | Reproduce the doubled trace and predict its exact length; remove the reducer | Why is "return a delta" right only for append fields? |
+| 7 Model | Identify everything the model receives; add an intent and find all places to change | Where exactly does model output stop being data and become a decision? |
+| 8 Dispatch | Send malicious tool inputs; add a tool and forget its allowlist branch | Why is removing `customer_id` from the schema stronger than a prompt rule? |
+| 9 Memory | Reproduce stale per-turn data; mix up threads and customers | How are `history` and `tool_result` merged, reset, and lost on restart? |
+| 10 Webhook | Send invalid requests with curl; call `run_bot` without HTTP; design a dedupe | Where does `phone` become `thread_id` and `customer_id`? Why is that not auth? |
+| 11 Interrupt | Fix the double notification; resume from a fresh checkpointer | What re-executes on resume, and why is checkpointing not exactly-once? |
+| 12 Testing | Break ownership and read the failing test; write one AAA test yourself | Explain one test's arrange/act/assert and the bug it would catch |
+
+The agent checks one tricky concrete case per gate, not definitions. Record reviewed
+completion in PROGRESS.md; runtime verification is not enough.
 
 ## Final independent task
 
