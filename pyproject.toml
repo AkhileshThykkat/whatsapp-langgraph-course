@@ -1,0 +1,9 @@
+[project]
+name = "whatsapp-agent-course"
+version = "0.1.0"
+description = "Learn LangGraph intuitively through small runnable Python scripts"
+requires-python = ">=3.12,<3.14"
+dependencies = ["langgraph>=1,<2"]
+
+[tool.uv]
+package = false

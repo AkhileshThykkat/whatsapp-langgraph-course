@@ -1,0 +1,17 @@
+.venv/
+.uv-cache/
+.uv-python/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Local-only drafts and source provenance are not part of the public course.
+_reference_draft/
+docs/SOURCE_MAP.md
+docs/reference/
