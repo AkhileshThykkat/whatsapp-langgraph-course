@@ -27,6 +27,7 @@ ORDERS = {
 # 555-01xx numbers are reserved for fiction. Knowing a number is NOT authentication.
 DEMO_CUSTOMERS_BY_PHONE = {"+15550100001": "cust_ana", "+15550100002": "cust_ben"}
 MAX_TEXT_LENGTH = 1000
+MAX_BODY_BYTES = 10_000
 
 
 # ---------------------------------------------------------------------------
@@ -123,10 +124,22 @@ class WebhookHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path != "/webhook":
             return self.send_json(404, {"error": "not found"})
-        body = self.rfile.read(int(self.headers.get("Content-Length", 0)))
+        # Simple why: Check how big the envelope claims to be before opening it.
+        # Technical explanation: Content-Length comes from the client. A non-number would
+        # crash int(), a negative value makes read() wait for the client to hang up, and a
+        # huge one would pull a huge body into memory. Reject all three before reading.
+        try:
+            length = int(self.headers.get("Content-Length", 0))
+        except ValueError:
+            return self.send_json(400, {"error": "invalid Content-Length"})
+        if length < 0:
+            return self.send_json(400, {"error": "invalid Content-Length"})
+        if length > MAX_BODY_BYTES:
+            return self.send_json(413, {"error": "body too large"})
+        body = self.rfile.read(length)
         try:
             data = json.loads(body)
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, UnicodeDecodeError):  # bad JSON, or bytes that aren't UTF-8
             return self.send_json(400, {"error": "body is not valid JSON"})
         problem = validate_payload(data)
         if problem:

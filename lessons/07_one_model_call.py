@@ -103,9 +103,11 @@ def parse_intent(raw_text: str) -> dict:
         data = json.loads(raw_text)
     except json.JSONDecodeError as error:
         return {"ok": False, "intent": "unknown", "problem": f"not JSON ({error.msg})"}
-    if not isinstance(data, dict) or data.get("intent") not in ALLOWED_INTENTS:
+    intent = data.get("intent") if isinstance(data, dict) else None
+    # Check the TYPE before the allowlist: a list or dict cannot be looked up in a set.
+    if not isinstance(intent, str) or intent not in ALLOWED_INTENTS:
         return {"ok": False, "intent": "unknown", "problem": f"not an allowed intent: {data!r}"}
-    return {"ok": True, "intent": data["intent"], "problem": None}
+    return {"ok": True, "intent": intent, "problem": None}
 
 
 def main():
